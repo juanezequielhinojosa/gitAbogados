@@ -16,6 +16,14 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <script>
+        // Prevent Flash of Unthemed Content (FOUT)
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <style>
         :root {
             --bg: #fcfcf9;
@@ -31,6 +39,23 @@
             --container-max: 1400px;
             /* Aumentado a 1400px para más amplitud */
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --nav-bg: rgba(252, 252, 249, 0.85);
+            --card-bg: #ffffff;
+            --footer-bg: #022c22;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --gold: #10b981;
+            /* Brighter emerald for dark mode */
+            --gold-hover: #34d399;
+            --border: rgba(241, 245, 249, 0.1);
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            --card-bg: #1e293b;
+            --footer-bg: #080c17;
         }
 
         * {
@@ -63,7 +88,7 @@
             top: 0;
             width: 100%;
             height: 80px;
-            background: rgba(252, 252, 249, 0.85);
+            background: var(--nav-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
@@ -75,7 +100,7 @@
 
         nav.scrolled {
             height: 70px;
-            background: rgba(252, 252, 249, 0.98);
+            background: var(--bg);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
         }
 
@@ -286,7 +311,7 @@
 
         .hero-btn-centered:hover {
             background: #fff;
-            color: var(--text);
+            color: #0f172a;
             transform: scale(1.05);
             box-shadow: 0 30px 60px rgba(255, 255, 255, 0.2);
         }
@@ -437,7 +462,7 @@
         }
 
         .service-card {
-            background: white;
+            background: var(--card-bg);
             padding: 0;
             border: 1px solid var(--border);
             transition: var(--transition);
@@ -519,8 +544,7 @@
 
         /* History Section */
         .history {
-            background: #fdfdfb;
-            /* Warmer off-white */
+            background: var(--bg);
             position: relative;
             overflow: hidden;
         }
@@ -592,7 +616,7 @@
         }
 
         .info-card {
-            background: white;
+            background: var(--card-bg);
             padding: 4rem 2rem;
             display: flex;
             flex-direction: column;
@@ -603,7 +627,7 @@
         }
 
         .info-card:hover {
-            background: #fcfcfc;
+            background: var(--surface);
             transform: none;
             box-shadow: inset 0 0 0 1px var(--gold);
         }
@@ -719,7 +743,7 @@
         }
 
         .contact-form-side {
-            background: #fff;
+            background: var(--card-bg);
             padding: 4rem;
             border: 1px solid var(--border);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
@@ -786,13 +810,38 @@
             filter: grayscale(0);
         }
 
+        [data-theme="dark"] .contact-map-full {
+            filter: grayscale(1) invert(0.9) hue-rotate(180deg) contrast(1.1);
+            opacity: 0.6;
+        }
+
+        [data-theme="dark"] .contact-map-full:hover {
+            opacity: 0.9;
+            filter: grayscale(0.5) invert(0.9) hue-rotate(180deg) contrast(1.1);
+        }
+
         /* Footer Retouches */
         footer {
-            padding: 6rem 0 3rem 0;
-            background: #022c22;
-            /* Deep forest green */
+            padding: 8rem 0 4rem 0;
+            background: var(--footer-bg);
             color: #f1f5f9;
-            border-top: 2px solid var(--gold);
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        [data-theme="dark"] footer {
+            background: linear-gradient(to bottom, #080c17, #050810);
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
         }
 
         .footer-grid {
@@ -810,6 +859,18 @@
             margin-bottom: 2rem;
             color: #ffffff;
             font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 20px;
+            height: 1px;
+            background: var(--gold);
         }
 
         .footer-col p,
@@ -838,16 +899,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(148, 163, 184, 0.2);
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
             border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .social-link:hover {
-            color: var(--gold);
+            color: #fff;
+            background: var(--gold);
             border-color: var(--gold);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
         }
 
         .footer-bottom {
@@ -878,7 +942,7 @@
         }
 
         .footer-legal-links a:hover {
-            color: #fff;
+            color: var(--gold);
         }
 
         @media (max-width: 768px) {
@@ -976,6 +1040,63 @@
                 font-size: 2.5rem;
             }
         }
+
+        .lang-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+            border-radius: 4px;
+        }
+
+        .lang-toggle:hover {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        @media (max-width: 1024px) {
+            .lang-toggle {
+                margin-left: 0;
+                margin-top: 1rem;
+                font-size: 0.9rem;
+                padding: 0.6rem 1.2rem;
+            }
+        }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--gold);
+            color: #fff;
+            transform: rotate(15deg);
+        }
+
+        @media (max-width: 1024px) {
+            .theme-toggle {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -986,10 +1107,14 @@
         <div class="container">
             <a href="#" class="logo">VALENZUELA & ASOC.</a>
             <div class="nav-links">
-                <a href="#inicio" class="nav-link">Inicio</a>
-                <a href="#servicios" class="nav-link">Servicios</a>
-                <a href="#historia" class="nav-link">Historia</a>
-                <a href="#contacto" class="nav-link">Contacto</a>
+                <a href="#inicio" class="nav-link" data-i18n="nav-home">Inicio</a>
+                <a href="#servicios" class="nav-link" data-i18n="nav-services">Servicios</a>
+                <a href="#historia" class="nav-link" data-i18n="nav-history">Historia</a>
+                <a href="#contacto" class="nav-link" data-i18n="nav-contact">Contacto</a>
+                <button class="lang-toggle" id="lang-toggle">EN</button>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
             </div>
             <button class="mobile-menu-btn">
                 <i data-lucide="menu"></i>
@@ -1008,13 +1133,14 @@
             </video>
             <div class="hero-overlay"></div>
             <div class="hero-content-centered">
-                <span class="hero-badge-centered">Excelencia Jurídica</span>
-                <h1 class="hero-title-centered">Justicia <span>con Integridad.</span></h1>
-                <p class="hero-description-centered">Defendemos sus derechos con la solidez de la experiencia y la
-                    agilidad de la modernidad. Su caso, nuestra prioridad absoluta.</p>
+                <span class="hero-badge-centered" data-i18n="hero-badge">Excelencia Jurídica</span>
+                <h1 class="hero-title-centered" data-i18n="hero-title">Justicia <span data-i18n="hero-title-span">con
+                        Integridad.</span></h1>
+                <p class="hero-description-centered" data-i18n="hero-desc">Defendemos sus derechos con la solidez de la
+                    experiencia y la agilidad de la modernidad. Su caso, nuestra prioridad absoluta.</p>
 
                 <!-- THE BUTTON - CLEAR AND PROMINENT -->
-                <a href="#contacto" class="hero-btn-centered">
+                <a href="#contacto" class="hero-btn-centered" data-i18n="hero-btn">
                     Solicitar Consulta
                     <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
                 </a>
@@ -1022,11 +1148,11 @@
                 <div class="hero-stats-centered">
                     <div class="stat-centered-item">
                         <h4>20+</h4>
-                        <p>Años de Trayectoria</p>
+                        <p data-i18n="stat-years">Años de Trayectoria</p>
                     </div>
                     <div class="stat-centered-item">
                         <h4>500+</h4>
-                        <p>Casos Exitosos</p>
+                        <p data-i18n="stat-cases">Casos Exitosos</p>
                     </div>
                 </div>
             </div>
@@ -1036,8 +1162,8 @@
         <section id="servicios" class="services">
             <div class="container">
                 <div class="section-header">
-                    <span class="meta-label">Servicios</span>
-                    <h2>Conocé mis servicios</h2>
+                    <span class="meta-label" data-i18n="services-meta">Servicios</span>
+                    <h2 data-i18n="services-title">Conocé mis servicios</h2>
                 </div>
                 <div class="services-grid">
                     <div class="service-card">
@@ -1047,9 +1173,9 @@
                         </div>
                         <div class="service-info">
                             <div class="service-number">01/</div>
-                            <h3>Sucesiones en CABA y Provincia de Buenos Aires</h3>
-                            <p>Intervención especializada en procesos sucesorios dentro de Capital y Provincia, con
-                                conocimiento local y experiencia comprobada.</p>
+                            <h3 data-i18n="service-1-title">Sucesiones en CABA y Provincia de Buenos Aires</h3>
+                            <p data-i18n="service-1-desc">Intervención especializada en procesos sucesorios dentro de
+                                Capital y Provincia, con conocimiento local y experiencia comprobada.</p>
                         </div>
                     </div>
                     <div class="service-card">
@@ -1059,9 +1185,9 @@
                         </div>
                         <div class="service-info">
                             <div class="service-number">02/</div>
-                            <h3>Asesoramiento inicial y estrategia legal</h3>
-                            <p>Análisis del caso y definición de una estrategia clara, contemplando la situación
-                                familiar y legal desde el inicio.</p>
+                            <h3 data-i18n="service-2-title">Asesoramiento inicial y estrategia legal</h3>
+                            <p data-i18n="service-2-desc">Análisis del caso y definición de una estrategia clara,
+                                contemplando la situación familiar y legal desde el inicio.</p>
                         </div>
                     </div>
                     <div class="service-card">
@@ -1071,9 +1197,9 @@
                         </div>
                         <div class="service-info">
                             <div class="service-number">03/</div>
-                            <h3>Gestión documental y registral integral</h3>
-                            <p>Recopilación y tramitación de toda la documentación necesaria, gestionada de forma
-                                directa y sin intermediarios.</p>
+                            <h3 data-i18n="service-3-title">Gestión documental y registral integral</h3>
+                            <p data-i18n="service-3-desc">Recopilación y tramitación de toda la documentación necesaria,
+                                gestionada de forma directa y sin intermediarios.</p>
                         </div>
                     </div>
                     <div class="service-card">
@@ -1083,9 +1209,9 @@
                         </div>
                         <div class="service-info">
                             <div class="service-number">04/</div>
-                            <h3>Seguimiento y comunicación permanente</h3>
-                            <p>Control del expediente en cada etapa, con información clara y contacto continuo durante
-                                todo el proceso.</p>
+                            <h3 data-i18n="service-4-title">Seguimiento y comunicación permanente</h3>
+                            <p data-i18n="service-4-desc">Control del expediente en cada etapa, con información clara y
+                                contacto continuo durante todo el proceso.</p>
                         </div>
                     </div>
                     <div class="service-card">
@@ -1095,8 +1221,9 @@
                         </div>
                         <div class="service-info">
                             <div class="service-number">05/</div>
-                            <h3>Sucesiones con inmuebles</h3>
-                            <p>Orden y regularización de bienes, con preparación adecuada para una eventual venta.</p>
+                            <h3 data-i18n="service-5-title">Sucesiones con inmuebles</h3>
+                            <p data-i18n="service-5-desc">Orden y regularización de bienes, con preparación adecuada
+                                para una eventual venta.</p>
                         </div>
                     </div>
                     <div class="service-card">
@@ -1106,8 +1233,9 @@
                         </div>
                         <div class="service-info">
                             <div class="service-number">06/</div>
-                            <h3>Atención a inmobiliarias</h3>
-                            <p>Canal de derivación y soporte legal para inmobiliarias en casos sucesorios complejos.</p>
+                            <h3 data-i18n="service-6-title">Atención a inmobiliarias</h3>
+                            <p data-i18n="service-6-desc">Canal de derivación y soporte legal para inmobiliarias en
+                                casos sucesorios complejos.</p>
                         </div>
                     </div>
                 </div>
@@ -1118,8 +1246,8 @@
         <section id="historia" class="history">
             <div class="container">
                 <div class="section-header">
-                    <span class="meta-label">Historia</span>
-                    <h2>Nuestra Trayectoria</h2>
+                    <span class="meta-label" data-i18n="history-meta">Historia</span>
+                    <h2 data-i18n="history-title">Nuestra Trayectoria</h2>
                 </div>
                 <div class="history-grid">
                     <div class="history-portrait">
@@ -1127,41 +1255,42 @@
                             alt="Dr. Alejandro Valenzuela" referrerpolicy="no-referrer">
                     </div>
                     <div class="history-text">
-                        <p>Fundado por el Dr. Alejandro Valenzuela, nuestro estudio jurídico ofrece soluciones legales
-                            efectivas y cercanas desde hace más de 20 años.</p>
-                        <p>Especializados en conflictos civiles, penales y corporativos, brindamos asesoramiento
-                            estratégico con un enfoque humano y profesional.</p>
-                        <p>Tratamos cada caso con absoluta seriedad y confidencialidad, garantizando el compromiso total
-                            con los resultados de nuestros clientes.</p>
+                        <p data-i18n="history-p1">Fundado por el Dr. Alejandro Valenzuela, nuestro estudio jurídico
+                            ofrece soluciones legales efectivas y cercanas desde hace más de 20 años.</p>
+                        <p data-i18n="history-p2">Especializados en conflictos civiles, penales y corporativos,
+                            brindamos asesoramiento estratégico con un enfoque humano y profesional.</p>
+                        <p data-i18n="history-p3">Tratamos cada caso con absoluta seriedad y confidencialidad,
+                            garantizando el compromiso total con los resultados de nuestros clientes.</p>
                     </div>
                 </div>
                 <div class="history-cards">
                     <div class="info-card">
                         <div class="card-icon"><i data-lucide="calendar"></i></div>
                         <div class="card-content">
-                            <h3>Ejercicio profesional</h3>
-                            <p>Desde 1992</p>
+                            <h3 data-i18n="card-1-title">Ejercicio profesional</h3>
+                            <p data-i18n="card-1-desc">Desde 1992</p>
                         </div>
                     </div>
                     <div class="info-card">
                         <div class="card-icon"><i data-lucide="award"></i></div>
                         <div class="card-content">
-                            <h3>Área de expertise</h3>
-                            <p>Derechos Sucesorios<br>Derechos Reales</p>
+                            <h3 data-i18n="card-2-title">Área de expertise</h3>
+                            <p data-i18n="card-2-desc">Derechos Sucesorios<br>Derechos Reales</p>
                         </div>
                     </div>
                     <div class="info-card">
                         <div class="card-icon"><i data-lucide="map-pin"></i></div>
                         <div class="card-content">
-                            <h3>Ubicación</h3>
-                            <p>CABA y Provincia de Buenos Aires</p>
+                            <h3 data-i18n="card-3-title">Ubicación</h3>
+                            <p data-i18n="card-3-desc">CABA y Provincia de Buenos Aires</p>
                         </div>
                     </div>
                     <div class="info-card">
                         <div class="card-icon"><i data-lucide="user"></i></div>
                         <div class="card-content">
-                            <h3>Perfil profesional</h3>
-                            <p>Abogada •<br>Martillera, Corredora Pública y Corredora Inmobiliaria •</p>
+                            <h3 data-i18n="card-4-title">Perfil profesional</h3>
+                            <p data-i18n="card-4-desc">Abogada •<br>Martillera, Corredora Pública y Corredora
+                                Inmobiliaria •</p>
                         </div>
                     </div>
                 </div>
@@ -1172,64 +1301,65 @@
         <section id="contacto" class="contact">
             <div class="container">
                 <div class="section-header">
-                    <span class="meta-label">Contacto</span>
-                    <h2>Hablemos de su caso</h2>
+                    <span class="meta-label" data-i18n="contact-meta">Contacto</span>
+                    <h2 data-i18n="contact-title">Hablemos de su caso</h2>
                 </div>
 
                 <div class="contact-grid">
                     <!-- Info Side -->
                     <div class="contact-info-side">
                         <div class="contact-method">
-                            <span class="method-label">Ubicación</span>
-                            <div class="method-value">Av. Libertador 1234, Piso 10, Oficina B<br>CABA, Argentina</div>
+                            <span class="method-label" data-i18n="contact-loc-label">Ubicación</span>
+                            <div class="method-value" data-i18n="contact-loc-val">Av. Libertador 1234, Piso 10, Oficina
+                                B<br>CABA, Argentina</div>
                         </div>
 
                         <div class="contact-method">
-                            <span class="method-label">Teléfono</span>
+                            <span class="method-label" data-i18n="contact-phone-label">Teléfono</span>
                             <div class="method-value"><a href="tel:+541145678900">+54 11 4567-8900</a></div>
                         </div>
 
                         <div class="contact-method">
-                            <span class="method-label">Email</span>
+                            <span class="method-label" data-i18n="contact-email-label">Email</span>
                             <div class="method-value"><a
                                     href="mailto:consultas@valenzuela-asoc.com">consultas@valenzuela-asoc.com</a></div>
                         </div>
 
                         <div class="contact-method">
-                            <span class="method-label">Horarios</span>
-                            <div class="method-value">Lunes a Viernes: 09:00 - 18:00</div>
+                            <span class="method-label" data-i18n="contact-hours-label">Horarios</span>
+                            <div class="method-value" data-i18n="contact-hours-val">Lunes a Viernes: 09:00 - 18:00</div>
                         </div>
                     </div>
 
                     <!-- Form Side -->
                     <div class="contact-form-side">
-                        <h3>Envíenos un mensaje</h3>
+                        <h3 data-i18n="form-title">Envíenos un mensaje</h3>
                         <form id="lawyer-contact-form" class="modern-form">
                             <div class="form-group">
-                                <label class="form-label">Nombre</label>
-                                <input type="text" class="form-input" placeholder="Nombre completo" required>
+                                <label class="form-label" data-i18n="form-name">Nombre</label>
+                                <input type="text" class="form-input" placeholder="Nombre completo"
+                                    data-i18n-placeholder="form-name-ph" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input" placeholder="Correo electrónico" required>
+                                <label class="form-label" data-i18n="form-email">Email</label>
+                                <input type="email" class="form-input" placeholder="Correo electrónico"
+                                    data-i18n-placeholder="form-email-ph" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Mensaje</label>
+                                <label class="form-label" data-i18n="form-msg">Mensaje</label>
                                 <textarea class="form-input form-textarea" placeholder="¿En qué podemos ayudarle?"
-                                    required style="min-height: 100px;"></textarea>
+                                    data-i18n-placeholder="form-msg-ph" required style="min-height: 100px;"></textarea>
                             </div>
-                            <button type="submit" class="btn" style="width: 100%; margin-top: 2rem;">Enviar
-                                Consulta</button>
+                            <button type="submit" class="btn" style="width: 100%; margin-top: 2rem;"
+                                data-i18n="form-btn">Enviar Consulta</button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Full Width Map -->
                 <div class="contact-map-full">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13.1!3m3!1m2!1s0x95bcca3b4ef90bb5%3A0x10471af2e0333045!2sObelisco!5e0!3m2!1ses-419!2sar!4v1710700000000!5m2!1ses-419!2sar"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
+                    <iframe src="https://www.google.com/maps?q=Obelisco%20Buenos%20Aires&output=embed" width="100%"
+                        height="100%" style="border:0;" allowfullscreen="" loading="lazy">
                     </iframe>
                 </div>
             </div>
@@ -1242,15 +1372,16 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h4>VALENZUELA & ASOC.</h4>
-                    <p>Defensa legal de excelencia con un enfoque humano, profesional y estratégico en cada caso.</p>
+                    <p data-i18n="footer-desc">Defensa legal de excelencia con un enfoque humano, profesional y
+                        estratégico en cada caso.</p>
                 </div>
                 <div class="footer-col">
-                    <h4>HORARIOS</h4>
-                    <p>Lunes a Viernes: 09:00 - 18:00</p>
-                    <p>Sábados: Consultas urgentes</p>
+                    <h4 data-i18n="footer-hours-title">HORARIOS</h4>
+                    <p data-i18n="contact-hours-val">Lunes a Viernes: 09:00 - 18:00</p>
+                    <p data-i18n="footer-sat">Sábados: Consultas urgentes</p>
                 </div>
                 <div class="footer-col">
-                    <h4>CONECTAR</h4>
+                    <h4 data-i18n="footer-connect">CONECTAR</h4>
                     <div class="social-links">
                         <a href="#" class="social-link" aria-label="LinkedIn"><i data-lucide="linkedin"
                                 size="18"></i></a>
@@ -1261,11 +1392,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Valenzuela & Asociados. Todos los derechos reservados.</p>
+                <p>&copy; 2026 Valenzuela & Asociados. <span data-i18n="footer-rights">Todos los derechos
+                        reservados.</span></p>
                 <div class="footer-legal-links">
-                    <a href="#">Privacidad</a>
-                    <a href="#">Términos</a>
-                    <a href="#">Cookies</a>
+                    <a href="#" data-i18n="footer-privacy">Privacidad</a>
+                    <a href="#" data-i18n="footer-terms">Términos</a>
+                    <a href="#" data-i18n="footer-cookies">Cookies</a>
                 </div>
             </div>
         </div>
@@ -1366,6 +1498,191 @@
             section.style.transform = 'translateY(30px)';
             section.style.transition = 'all 1s ease-out';
             observer.observe(section);
+        });
+
+        // Internationalization
+        const translations = {
+            es: {
+                'nav-home': 'Inicio',
+                'nav-services': 'Servicios',
+                'nav-history': 'Historia',
+                'nav-contact': 'Contacto',
+                'hero-badge': 'Excelencia Jurídica',
+                'hero-title': 'Justicia <span data-i18n="hero-title-span">con Integridad.</span>',
+                'hero-title-span': 'con Integridad.',
+                'hero-desc': 'Defendemos sus derechos con la solidez de la experiencia y la agilidad de la modernidad. Su caso, nuestra prioridad absoluta.',
+                'hero-btn': 'Solicitar Consulta',
+                'stat-years': 'Años de Trayectoria',
+                'stat-cases': 'Casos Exitosos',
+                'services-meta': 'Servicios',
+                'services-title': 'Conocé mis servicios',
+                'service-1-title': 'Sucesiones en CABA y Provincia de Buenos Aires',
+                'service-1-desc': 'Intervención especializada en procesos sucesorios dentro de Capital y Provincia, con conocimiento local y experiencia comprobada.',
+                'service-2-title': 'Asesoramiento inicial y estrategia legal',
+                'service-2-desc': 'Análisis del caso y definición de una estrategia clara, contemplando la situación familiar y legal desde el inicio.',
+                'service-3-title': 'Gestión documental y registral integral',
+                'service-3-desc': 'Recopilación y tramitación de toda la documentación necesaria, gestionada de forma directa y sin intermediarios.',
+                'service-4-title': 'Seguimiento y comunicación permanente',
+                'service-4-desc': 'Control del expediente en cada etapa, con información clara y contacto continuo durante todo el proceso.',
+                'service-5-title': 'Sucesiones con inmuebles',
+                'service-5-desc': 'Orden y regularización de bienes, con preparación adecuada para una eventual venta.',
+                'service-6-title': 'Atención a inmobiliarias',
+                'service-6-desc': 'Canal de derivación y soporte legal para inmobiliarias en casos sucesorios complejos.',
+                'history-meta': 'Historia',
+                'history-title': 'Nuestra Trayectoria',
+                'history-p1': 'Fundado por el Dr. Alejandro Valenzuela, nuestro estudio jurídico ofrece soluciones legales efectivas y cercanas desde hace más de 20 años.',
+                'history-p2': 'Especializados en conflictos civiles, penales y corporativos, brindamos asesoramiento estratégico con un enfoque humano y profesional.',
+                'history-p3': 'Tratamos cada caso con absoluta seriedad y confidencialidad, garantizando el compromiso total con los resultados de nuestros clientes.',
+                'card-1-title': 'Ejercicio profesional',
+                'card-1-desc': 'Desde 1992',
+                'card-2-title': 'Área de expertise',
+                'card-2-desc': 'Derechos Sucesorios<br>Derechos Reales',
+                'card-3-title': 'Ubicación',
+                'card-3-desc': 'CABA y Provincia de Buenos Aires',
+                'card-4-title': 'Perfil profesional',
+                'card-4-desc': 'Abogada •<br>Martillera, Corredora Pública y Corredora Inmobiliaria •',
+                'contact-meta': 'Contacto',
+                'contact-title': 'Hablemos de su caso',
+                'contact-loc-label': 'Ubicación',
+                'contact-loc-val': 'Av. Libertador 1234, Piso 10, Oficina B<br>CABA, Argentina',
+                'contact-phone-label': 'Teléfono',
+                'contact-email-label': 'Email',
+                'contact-hours-label': 'Horarios',
+                'contact-hours-val': 'Lunes a Viernes: 09:00 - 18:00',
+                'form-title': 'Envíenos un mensaje',
+                'form-name': 'Nombre',
+                'form-name-ph': 'Nombre completo',
+                'form-email': 'Email',
+                'form-email-ph': 'Correo electrónico',
+                'form-msg': 'Mensaje',
+                'form-msg-ph': '¿En qué podemos ayudarle?',
+                'form-btn': 'Enviar Consulta',
+                'footer-desc': 'Defensa legal de excelencia con un enfoque humano, profesional y estratégico en cada caso.',
+                'footer-hours-title': 'HORARIOS',
+                'footer-sat': 'Sábados: Consultas urgentes',
+                'footer-connect': 'CONECTAR',
+                'footer-rights': 'Todos los derechos reservados.',
+                'footer-privacy': 'Privacidad',
+                'footer-terms': 'Términos',
+                'footer-cookies': 'Cookies'
+            },
+            en: {
+                'nav-home': 'Home',
+                'nav-services': 'Services',
+                'nav-history': 'History',
+                'nav-contact': 'Contact',
+                'hero-badge': 'Legal Excellence',
+                'hero-title': 'Justice <span data-i18n="hero-title-span">with Integrity.</span>',
+                'hero-title-span': 'with Integrity.',
+                'hero-desc': 'We defend your rights with the strength of experience and the agility of modernity. Your case, our absolute priority.',
+                'hero-btn': 'Request Consultation',
+                'stat-years': 'Years of Experience',
+                'stat-cases': 'Successful Cases',
+                'services-meta': 'Services',
+                'services-title': 'Our Services',
+                'service-1-title': 'Probates in CABA and Buenos Aires Province',
+                'service-1-desc': 'Specialized intervention in probate processes within the Capital and Province, with local knowledge and proven experience.',
+                'service-2-title': 'Initial Advice and Legal Strategy',
+                'service-2-desc': 'Case analysis and definition of a clear strategy, considering the family and legal situation from the start.',
+                'service-3-title': 'Comprehensive Document and Registry Management',
+                'service-3-desc': 'Collection and processing of all necessary documentation, managed directly and without intermediaries.',
+                'service-4-title': 'Permanent Monitoring and Communication',
+                'service-4-desc': 'Control of the file at each stage, with clear information and continuous contact throughout the process.',
+                'service-5-title': 'Probates with Real Estate',
+                'service-5-desc': 'Order and regularization of assets, with adequate preparation for an eventual sale.',
+                'service-6-title': 'Service to Real Estate Agencies',
+                'service-6-desc': 'Referral channel and legal support for real estate agencies in complex probate cases.',
+                'history-meta': 'History',
+                'history-title': 'Our History',
+                'history-p1': 'Founded by Dr. Alejandro Valenzuela, our law firm has been offering effective and close legal solutions for more than 20 years.',
+                'history-p2': 'Specialized in civil, criminal, and corporate conflicts, we provide strategic advice with a human and professional approach.',
+                'history-p3': 'We treat each case with absolute seriousness and confidentiality, guaranteeing total commitment to our clients\' results.',
+                'card-1-title': 'Professional Practice',
+                'card-1-desc': 'Since 1992',
+                'card-2-title': 'Area of Expertise',
+                'card-2-desc': 'Probate Rights<br>Property Rights',
+                'card-3-title': 'Location',
+                'card-3-desc': 'CABA and Buenos Aires Province',
+                'card-4-title': 'Professional Profile',
+                'card-4-desc': 'Lawyer •<br>Auctioneer, Public Broker and Real Estate Broker •',
+                'contact-meta': 'Contact',
+                'contact-title': 'Let\'s Talk About Your Case',
+                'contact-loc-label': 'Location',
+                'contact-loc-val': 'Av. Libertador 1234, 10th Floor, Office B<br>CABA, Argentina',
+                'contact-phone-label': 'Phone',
+                'contact-email-label': 'Email',
+                'contact-hours-label': 'Hours',
+                'contact-hours-val': 'Monday to Friday: 09:00 - 18:00',
+                'form-title': 'Send us a message',
+                'form-name': 'Name',
+                'form-name-ph': 'Full Name',
+                'form-email': 'Email',
+                'form-email-ph': 'Email Address',
+                'form-msg': 'Message',
+                'form-msg-ph': 'How can we help you?',
+                'form-btn': 'Send Inquiry',
+                'footer-desc': 'Excellent legal defense with a human, professional, and strategic approach in each case.',
+                'footer-hours-title': 'HOURS',
+                'footer-sat': 'Saturdays: Urgent consultations',
+                'footer-connect': 'CONNECT',
+                'footer-rights': 'All rights reserved.',
+                'footer-privacy': 'Privacy',
+                'footer-terms': 'Terms',
+                'footer-cookies': 'Cookies'
+            }
+        };
+
+        let currentLang = 'es';
+        const langToggle = document.getElementById('lang-toggle');
+
+        function updateLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            langToggle.textContent = lang === 'es' ? 'EN' : 'ES';
+            document.documentElement.lang = lang;
+
+            // Re-initialize Lucide icons as some might be in translated content
+            lucide.createIcons();
+        }
+
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            updateLanguage(currentLang);
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+
+        function updateThemeIcon(theme) {
+            themeToggle.innerHTML = theme === 'dark'
+                ? '<i data-lucide="sun"></i>'
+                : '<i data-lucide="moon"></i>';
+            lucide.createIcons();
+        }
+
+        // Initialize icon on load
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
         });
     </script>
 </body>
